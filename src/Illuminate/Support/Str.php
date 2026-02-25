@@ -376,12 +376,12 @@ class Str
     public static function deduplicate(string $string, array|string $characters = ' ')
     {
         if (is_string($characters)) {
-            return preg_replace('/'.preg_quote($characters, '/').'+/u', $characters, $string);
+            return preg_replace('/' . preg_quote($characters, '/') . '+/u', $characters, $string);
         }
 
         return array_reduce(
             $characters,
-            fn ($carry, $character) => preg_replace('/'.preg_quote($character, '/').'+/u', $character, $carry),
+            fn($carry, $character) => preg_replace('/' . preg_quote($character, '/') . '+/u', $character, $carry),
             $string
         );
     }
@@ -437,7 +437,7 @@ class Str
         $radius = $options['radius'] ?? 100;
         $omission = $options['omission'] ?? '...';
 
-        preg_match('/^(.*?)('.preg_quote((string) $phrase, '/').')(.*)$/iu', (string) $text, $matches);
+        preg_match('/^(.*?)(' . preg_quote((string) $phrase, '/') . ')(.*)$/iu', (string) $text, $matches);
 
         if (empty($matches)) {
             return null;
@@ -446,15 +446,15 @@ class Str
         $start = ltrim($matches[1]);
 
         $start = Str::of(mb_substr($start, max(mb_strlen($start, 'UTF-8') - $radius, 0), $radius, 'UTF-8'))->ltrim()->unless(
-            fn ($startWithRadius) => $startWithRadius->exactly($start),
-            fn ($startWithRadius) => $startWithRadius->prepend($omission),
+            fn($startWithRadius) => $startWithRadius->exactly($start),
+            fn($startWithRadius) => $startWithRadius->prepend($omission),
         );
 
         $end = rtrim($matches[3]);
 
         $end = Str::of(mb_substr($end, 0, $radius, 'UTF-8'))->rtrim()->unless(
-            fn ($endWithRadius) => $endWithRadius->exactly($end),
-            fn ($endWithRadius) => $endWithRadius->append($omission),
+            fn($endWithRadius) => $endWithRadius->exactly($end),
+            fn($endWithRadius) => $endWithRadius->append($omission),
         );
 
         return $start->append($matches[2], $end)->toString();
@@ -471,7 +471,7 @@ class Str
     {
         $quoted = preg_quote($cap, '/');
 
-        return preg_replace('/(?:'.$quoted.')+$/u', '', $value).$cap;
+        return preg_replace('/(?:' . $quoted . ')+$/u', '', $value) . $cap;
     }
 
     /**
@@ -484,7 +484,7 @@ class Str
      */
     public static function wrap($value, $before, $after = null)
     {
-        return $before.$value.($after ?? $before);
+        return $before . $value . ($after ?? $before);
     }
 
     /**
@@ -545,7 +545,7 @@ class Str
             // pattern such as "library/*", making any string check convenient.
             $pattern = str_replace('\*', '.*', $pattern);
 
-            if (preg_match('#^'.$pattern.'\z#'.($ignoreCase ? 'isu' : 'su'), $value) === 1) {
+            if (preg_match('#^' . $pattern . '\z#' . ($ignoreCase ? 'isu' : 'su'), $value) === 1) {
                 return true;
             }
         }
@@ -610,7 +610,7 @@ class Str
             (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?  # basic auth
             (
                 (?:
-                    (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++            # a domain name using punycode
+                    (?:[\pL\pN\pS\pM\-\_]++\.)*+xn--[a-z0-9-]++            # a domain name using punycode
                         |
                     (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++          # a multi-level domain name
                         |
@@ -732,7 +732,7 @@ class Str
         }
 
         if (! $preserveWords) {
-            return rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8')).$end;
+            return rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8')) . $end;
         }
 
         $value = trim(preg_replace('/[\n\r]+/', ' ', strip_tags($value)));
@@ -740,10 +740,10 @@ class Str
         $trimmed = rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8'));
 
         if (mb_substr($value, $limit, 1, 'UTF-8') === ' ') {
-            return $trimmed.$end;
+            return $trimmed . $end;
         }
 
-        return preg_replace("/(.*)\s.*/", '$1', $trimmed).$end;
+        return preg_replace("/(.*)\s.*/", '$1', $trimmed) . $end;
     }
 
     /**
@@ -767,13 +767,13 @@ class Str
      */
     public static function words($value, $words = 100, $end = '...')
     {
-        preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/u', $value, $matches);
+        preg_match('/^\s*+(?:\S++\s*+){1,' . $words . '}/u', $value, $matches);
 
         if (! isset($matches[0]) || static::length($value) === static::length($matches[0])) {
             return $value;
         }
 
-        return rtrim($matches[0]).$end;
+        return rtrim($matches[0]) . $end;
     }
 
     /**
@@ -854,7 +854,7 @@ class Str
         $segmentLen = mb_strlen($segment, $encoding);
         $end = mb_substr($string, $startIndex + $segmentLen);
 
-        return $start.str_repeat(mb_substr($character, 0, 1, $encoding), $segmentLen).$end;
+        return $start . str_repeat(mb_substr($character, 0, 1, $encoding), $segmentLen) . $end;
     }
 
     /**
@@ -1006,7 +1006,7 @@ class Str
             $count = count($count);
         }
 
-        return ($prependCount ? Number::format($count).' ' : '').Pluralizer::plural($value, $count);
+        return ($prependCount ? Number::format($count) . ' ' : '') . Pluralizer::plural($value, $count);
     }
 
     /**
@@ -1022,7 +1022,7 @@ class Str
 
         $lastWord = array_pop($parts);
 
-        return implode('', $parts).self::plural($lastWord, $count);
+        return implode('', $parts) . self::plural($lastWord, $count);
     }
 
     /**
@@ -1053,30 +1053,109 @@ class Str
 
         $options = (new Collection([
             'letters' => $letters === true ? [
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-                'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-                'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f',
+                'g',
+                'h',
+                'i',
+                'j',
+                'k',
+                'l',
+                'm',
+                'n',
+                'o',
+                'p',
+                'q',
+                'r',
+                's',
+                't',
+                'u',
+                'v',
+                'w',
+                'x',
+                'y',
+                'z',
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H',
+                'I',
+                'J',
+                'K',
+                'L',
+                'M',
+                'N',
+                'O',
+                'P',
+                'Q',
+                'R',
+                'S',
+                'T',
+                'U',
+                'V',
+                'W',
+                'X',
+                'Y',
+                'Z',
             ] : null,
             'numbers' => $numbers === true ? [
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '0',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
             ] : null,
             'symbols' => $symbols === true ? [
-                '~', '!', '#', '$', '%', '^', '&', '*', '(', ')', '-',
-                '_', '.', ',', '<', '>', '?', '/', '\\', '{', '}', '[',
-                ']', '|', ':', ';',
+                '~',
+                '!',
+                '#',
+                '$',
+                '%',
+                '^',
+                '&',
+                '*',
+                '(',
+                ')',
+                '-',
+                '_',
+                '.',
+                ',',
+                '<',
+                '>',
+                '?',
+                '/',
+                '\\',
+                '{',
+                '}',
+                '[',
+                ']',
+                '|',
+                ':',
+                ';',
             ] : null,
             'spaces' => $spaces === true ? [' '] : null,
         ]))
             ->filter()
-            ->each(fn ($c) => $password->push($c[random_int(0, count($c) - 1)]))
+            ->each(fn($c) => $password->push($c[random_int(0, count($c) - 1)]))
             ->flatten();
 
         $length = $length - $password->count();
 
         return $password->merge($options->pipe(
-            fn ($c) => Collection::times($length, fn () => $c[random_int(0, $c->count() - 1)])
+            fn($c) => Collection::times($length, fn() => $c[random_int(0, $c->count() - 1)])
         ))->shuffle()->implode('');
     }
 
@@ -1205,7 +1284,7 @@ class Str
         $result = array_shift($segments);
 
         foreach ($segments as $segment) {
-            $result .= self::toStringOr(array_shift($replace) ?? $search, $search).$segment;
+            $result .= self::toStringOr(array_shift($replace) ?? $search, $search) . $segment;
         }
 
         return $result;
@@ -1410,7 +1489,7 @@ class Str
     {
         $quoted = preg_quote($prefix, '/');
 
-        return $prefix.preg_replace('/^(?:'.$quoted.')+/u', '', $value);
+        return $prefix . preg_replace('/^(?:' . $quoted . ')+/u', '', $value);
     }
 
     /**
@@ -1469,9 +1548,40 @@ class Str
         }
 
         $minorWords = [
-            'and', 'as', 'but', 'for', 'if', 'nor', 'or', 'so', 'yet', 'a', 'an',
-            'the', 'at', 'by', 'in', 'of', 'off', 'on', 'per', 'to', 'up', 'via',
-            'et', 'ou', 'un', 'une', 'la', 'le', 'les', 'de', 'du', 'des', 'par', 'à',
+            'and',
+            'as',
+            'but',
+            'for',
+            'if',
+            'nor',
+            'or',
+            'so',
+            'yet',
+            'a',
+            'an',
+            'the',
+            'at',
+            'by',
+            'in',
+            'of',
+            'off',
+            'on',
+            'per',
+            'to',
+            'up',
+            'via',
+            'et',
+            'ou',
+            'un',
+            'une',
+            'la',
+            'le',
+            'les',
+            'de',
+            'du',
+            'des',
+            'par',
+            'à',
         ];
 
         $endPunctuation = ['.', '!', '?', ':', '—', ','];
@@ -1488,17 +1598,19 @@ class Str
                 $hyphenatedWords = array_map(function ($part) use ($minorWords) {
                     return (in_array($part, $minorWords) && mb_strlen($part) <= 3)
                         ? $part
-                        : mb_strtoupper(mb_substr($part, 0, 1)).mb_substr($part, 1);
+                        : mb_strtoupper(mb_substr($part, 0, 1)) . mb_substr($part, 1);
                 }, $hyphenatedWords);
 
                 $words[$i] = implode('-', $hyphenatedWords);
             } else {
-                if (in_array($lowercaseWord, $minorWords) &&
+                if (
+                    in_array($lowercaseWord, $minorWords) &&
                     mb_strlen($lowercaseWord) <= 3 &&
-                    ! ($i === 0 || in_array(mb_substr($words[$i - 1], -1), $endPunctuation))) {
+                    ! ($i === 0 || in_array(mb_substr($words[$i - 1], -1), $endPunctuation))
+                ) {
                     $words[$i] = $lowercaseWord;
                 } else {
-                    $words[$i] = mb_strtoupper(mb_substr($lowercaseWord, 0, 1)).mb_substr($lowercaseWord, 1);
+                    $words[$i] = mb_strtoupper(mb_substr($lowercaseWord, 0, 1)) . mb_substr($lowercaseWord, 1);
                 }
             }
         }
@@ -1533,20 +1645,20 @@ class Str
         // Convert all dashes/underscores into separator
         $flip = $separator === '-' ? '_' : '-';
 
-        $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $title);
 
         // Replace dictionary words
         foreach ($dictionary as $key => $value) {
-            $dictionary[$key] = $separator.$value.$separator;
+            $dictionary[$key] = $separator . $value . $separator;
         }
 
         $title = str_replace(array_keys($dictionary), array_values($dictionary), $title);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($title));
+        $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', static::lower($title));
 
         // Replace all separator characters and whitespace by a single separator
-        $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
 
         return trim($title, $separator);
     }
@@ -1569,7 +1681,7 @@ class Str
         if (! ctype_lower($value)) {
             $value = preg_replace('/\s+/u', '', ucwords($value));
 
-            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, $value));
+            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
 
         return static::$snakeCache[$key][$delimiter] = $value;
@@ -1587,7 +1699,7 @@ class Str
         if ($charlist === null) {
             $trimDefaultCharacters = " \n\r\t\v\0";
 
-            return preg_replace('~^[\s'.self::INVISIBLE_CHARACTERS.$trimDefaultCharacters.']+|[\s'.self::INVISIBLE_CHARACTERS.$trimDefaultCharacters.']+$~u', '', $value) ?? trim($value);
+            return preg_replace('~^[\s' . self::INVISIBLE_CHARACTERS . $trimDefaultCharacters . ']+|[\s' . self::INVISIBLE_CHARACTERS . $trimDefaultCharacters . ']+$~u', '', $value) ?? trim($value);
         }
 
         return trim($value, $charlist);
@@ -1605,7 +1717,7 @@ class Str
         if ($charlist === null) {
             $ltrimDefaultCharacters = " \n\r\t\v\0";
 
-            return preg_replace('~^[\s'.self::INVISIBLE_CHARACTERS.$ltrimDefaultCharacters.']+~u', '', $value) ?? ltrim($value);
+            return preg_replace('~^[\s' . self::INVISIBLE_CHARACTERS . $ltrimDefaultCharacters . ']+~u', '', $value) ?? ltrim($value);
         }
 
         return ltrim($value, $charlist);
@@ -1623,7 +1735,7 @@ class Str
         if ($charlist === null) {
             $rtrimDefaultCharacters = " \n\r\t\v\0";
 
-            return preg_replace('~[\s'.self::INVISIBLE_CHARACTERS.$rtrimDefaultCharacters.']+$~u', '', $value) ?? rtrim($value);
+            return preg_replace('~[\s' . self::INVISIBLE_CHARACTERS . $rtrimDefaultCharacters . ']+$~u', '', $value) ?? rtrim($value);
         }
 
         return rtrim($value, $charlist);
@@ -1698,7 +1810,7 @@ class Str
 
         $words = mb_split('\s+', static::replace(['-', '_'], ' ', $value));
 
-        $studlyWords = array_map(fn ($word) => static::ucfirst($word), $words);
+        $studlyWords = array_map(fn($word) => static::ucfirst($word), $words);
 
         return static::$studlyCache[$key] = implode($studlyWords);
     }
@@ -1762,8 +1874,8 @@ class Str
         }
 
         return mb_substr($string, 0, $offset)
-            .$replace
-            .mb_substr(mb_substr($string, $offset), $length);
+            . $replace
+            . mb_substr(mb_substr($string, $offset), $length);
     }
 
     /**
@@ -1825,7 +1937,7 @@ class Str
      */
     public static function lcfirst($string)
     {
-        return static::lower(static::substr($string, 0, 1)).static::substr($string, 1);
+        return static::lower(static::substr($string, 0, 1)) . static::substr($string, 1);
     }
 
     /**
@@ -1836,7 +1948,7 @@ class Str
      */
     public static function ucfirst($string)
     {
-        return static::upper(static::substr($string, 0, 1)).static::substr($string, 1);
+        return static::upper(static::substr($string, 0, 1)) . static::substr($string, 1);
     }
 
     /**
@@ -1848,10 +1960,10 @@ class Str
      */
     public static function ucwords($string, $separators = " \t\r\n\f\v")
     {
-        $pattern = '/(^|['.preg_quote($separators, '/').'])(\p{Ll})/u';
+        $pattern = '/(^|[' . preg_quote($separators, '/') . '])(\p{Ll})/u';
 
         return preg_replace_callback($pattern, function ($matches) {
-            return $matches[1].mb_strtoupper($matches[2]);
+            return $matches[1] . mb_strtoupper($matches[2]);
         }, $string);
     }
 
@@ -1997,7 +2109,7 @@ class Str
     {
         $uuid = Str::uuid();
 
-        Str::createUuidsUsing(fn () => $uuid);
+        Str::createUuidsUsing(fn() => $uuid);
 
         if ($callback !== null) {
             try {
@@ -2104,7 +2216,7 @@ class Str
     {
         $ulid = Str::ulid();
 
-        Str::createUlidsUsing(fn () => $ulid);
+        Str::createUlidsUsing(fn() => $ulid);
 
         if ($callback !== null) {
             try {
