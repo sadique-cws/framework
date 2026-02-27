@@ -525,7 +525,7 @@ class PendingRequest
     public function withToken($token, $type = 'Bearer')
     {
         return tap($this, function () use ($token, $type) {
-            $this->options['headers']['Authorization'] = trim($type.' '.$token);
+            $this->options['headers']['Authorization'] = trim($type . ' ' . $token);
         });
     }
 
@@ -768,7 +768,7 @@ class PendingRequest
      */
     public function throw(?callable $callback = null)
     {
-        $this->throwCallback = $callback ?: fn () => null;
+        $this->throwCallback = $callback ?: fn() => null;
 
         return $this;
     }
@@ -1021,7 +1021,7 @@ class PendingRequest
     public function send(string $method, string $url, array $options = [])
     {
         if (! Str::startsWith($url, ['http://', 'https://'])) {
-            $url = ltrim(rtrim($this->baseUrl, '/').'/'.ltrim($url, '/'), '/');
+            $url = ltrim(rtrim($this->baseUrl, '/') . '/' . ltrim($url, '/'), '/');
         }
 
         $url = $this->expandUrlParameters($url);
@@ -1032,7 +1032,7 @@ class PendingRequest
 
         if ($this->async) {
             return $this->promise = new LazyPromise(
-                fn () => $this->makePromise($method, $url, $options)
+                fn() => $this->makePromise($method, $url, $options)
             );
         }
 
@@ -1051,16 +1051,20 @@ class PendingRequest
                     }
 
                     try {
-                        $shouldRetry = $this->retryWhenCallback ? call_user_func($this->retryWhenCallback, $response->toException(), $this, $this->request->toPsrRequest()->getMethod()) : true;
+                        $exception = $response->toException() ?? new \Illuminate\Http\Client\RequestException($response);
+
+                        $shouldRetry = $this->retryWhenCallback ? call_user_func($this->retryWhenCallback, $exception, $this, $this->request->toPsrRequest()->getMethod()) : true;
                     } catch (Exception $exception) {
                         $shouldRetry = false;
 
                         throw $exception;
                     }
 
-                    if ($this->throwCallback &&
+                    if (
+                        $this->throwCallback &&
                         ($this->throwIfCallback === null ||
-                         call_user_func($this->throwIfCallback, $response))) {
+                            call_user_func($this->throwIfCallback, $response))
+                    ) {
                         $response->throw($this->throwCallback);
                     }
 
@@ -1128,7 +1132,8 @@ class PendingRequest
 
             if (is_array($options[$this->bodyFormat])) {
                 $options[$this->bodyFormat] = array_merge(
-                    $options[$this->bodyFormat], $this->pendingFiles
+                    $options[$this->bodyFormat],
+                    $this->pendingFiles
                 );
             }
         } else {
@@ -1164,7 +1169,7 @@ class PendingRequest
 
                     // Otherwise, treat it as multiple values for the same field name...
                     return (new Collection($value))->map(function ($item) use ($key) {
-                        return ['name' => $key.'[]', 'contents' => $item];
+                        return ['name' => $key . '[]', 'contents' => $item];
                     });
                 }
 
@@ -1240,7 +1245,7 @@ class PendingRequest
         try {
             $shouldRetry = $this->retryWhenCallback ? call_user_func(
                 $this->retryWhenCallback,
-                $response instanceof Response ? $response->toException() : $response,
+                $response instanceof Response ? ($response->toException() ?? new \Illuminate\Http\Client\RequestException($response)) : $response,
                 $this
             ) : true;
         } catch (Exception $exception) {
@@ -1251,15 +1256,17 @@ class PendingRequest
             $options['delay'] = value(
                 $this->retryDelay,
                 $attempt,
-                $response instanceof Response ? $response->toException() : $response
+                $response instanceof Response ? ($response->toException() ?? new \Illuminate\Http\Client\RequestException($response)) : $response
             );
 
             return $this->makePromise($method, $url, $options, $attempt + 1);
         }
 
-        if ($response instanceof Response &&
+        if (
+            $response instanceof Response &&
             $this->throwCallback &&
-            ($this->throwIfCallback === null || call_user_func($this->throwIfCallback, $response))) {
+            ($this->throwIfCallback === null || call_user_func($this->throwIfCallback, $response))
+        ) {
             try {
                 $response->throw($this->throwCallback);
             } catch (Exception $exception) {
@@ -1807,7 +1814,8 @@ class PendingRequest
         $request = (new Request($e->getRequest()))->setRequestAttributes($this->attributes);
 
         $this->factory?->recordRequestResponsePair(
-            $request, null
+            $request,
+            null
         );
 
         $this->dispatchConnectionFailedEvent($request, $exception);
@@ -1830,7 +1838,8 @@ class PendingRequest
         $request = (new Request($e->getRequest()))->setRequestAttributes($this->attributes);
 
         $this->factory?->recordRequestResponsePair(
-            $request, null
+            $request,
+            null
         );
 
         $this->dispatchConnectionFailedEvent($request, $exception);

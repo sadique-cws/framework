@@ -407,7 +407,7 @@ class HttpClientTest extends TestCase
     {
         Response::macro('movieFields', function () {
             return $this->collect()
-                ->mapWithKeys(fn ($field, $key) => [strtolower($key) => $field])
+                ->mapWithKeys(fn($field, $key) => [strtolower($key) => $field])
                 ->toArray();
         });
 
@@ -545,7 +545,7 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/test' &&
-                   $request->hasHeader('Content-Type', 'application/json');
+                $request->hasHeader('Content-Type', 'application/json');
         });
     }
 
@@ -562,10 +562,10 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeader('Content-Type', 'application/json') &&
-                   $request->hasHeader('X-Test-Header', 'foo') &&
-                   $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                   $request['name'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/json') &&
+                $request->hasHeader('X-Test-Header', 'foo') &&
+                $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                $request['name'] === 'Taylor';
         });
     }
 
@@ -580,8 +580,8 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/form' &&
-                   $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
-                   $request['name'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
+                $request['name'] === 'Taylor';
         });
     }
 
@@ -597,8 +597,8 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/form' &&
-                   $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
-                   $request['name'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
+                $request['name'] === 'Taylor';
         });
     }
 
@@ -667,10 +667,10 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeader('Content-Type', 'application/json') &&
-                   $request->hasHeader('X-Test-Header', 'foo') &&
-                   $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                   $request['name'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/json') &&
+                $request->hasHeader('X-Test-Header', 'foo') &&
+                $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                $request['name'] === 'Taylor';
         });
     }
 
@@ -685,8 +685,8 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/form' &&
-                   $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
-                   $request['name'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
+                $request['name'] === 'Taylor';
         });
     }
 
@@ -700,8 +700,8 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/form' &&
-                   $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
-                   $request['posts'][0]['title'] === 'Taylor';
+                $request->hasHeader('Content-Type', 'application/x-www-form-urlencoded') &&
+                $request['posts'][0]['title'] === 'Taylor';
         });
     }
 
@@ -775,8 +775,8 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/multipart' &&
-                   Str::startsWith($request->header('Content-Type')[0], 'multipart') &&
-                   $request[0]['name'] === 'foo';
+                Str::startsWith($request->header('Content-Type')[0], 'multipart') &&
+                $request[0]['name'] === 'foo';
         });
     }
 
@@ -789,9 +789,9 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/file' &&
-                   Str::startsWith($request->header('Content-Type')[0], 'multipart') &&
-                   $request[0]['name'] === 'foo' &&
-                   $request->hasFile('foo', 'data', 'file.txt');
+                Str::startsWith($request->header('Content-Type')[0], 'multipart') &&
+                $request[0]['name'] === 'foo' &&
+                $request->hasFile('foo', 'data', 'file.txt');
         });
     }
 
@@ -929,7 +929,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->sequence()
                 ->push('Ok', 201)
                 ->push(['fact' => 'Cats are great!'])
-                ->pushFile(__DIR__.'/fixtures/test.txt')
+                ->pushFile(__DIR__ . '/fixtures/test.txt')
                 ->pushStatus(403),
         ]);
 
@@ -1003,7 +1003,8 @@ class HttpClientTest extends TestCase
         $this->factory->fakeSequence()->pushStatus(200);
 
         $response = $this->factory->withCookies(
-            ['foo' => 'bar'], 'https://laravel.com'
+            ['foo' => 'bar'],
+            'https://laravel.com'
         )->get('https://laravel.com');
 
         $this->assertCount(1, $response->cookies()->toArray());
@@ -1217,10 +1218,10 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeaders([
-                       'X-Test-Header' => 'foo',
-                       'X-Test-ArrayHeader' => ['bar', 'baz'],
-                   ]);
+                $request->hasHeaders([
+                    'X-Test-Header' => 'foo',
+                    'X-Test-ArrayHeader' => ['bar', 'baz'],
+                ]);
         });
     }
 
@@ -1235,7 +1236,7 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeaders('X-Test-Header');
+                $request->hasHeaders('X-Test-Header');
         });
     }
 
@@ -1253,7 +1254,7 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeaders(['X-Test-Header' => ['foo', 'bar', 'baz', 'qux']]);
+                $request->hasHeaders(['X-Test-Header' => ['foo', 'bar', 'baz', 'qux']]);
         });
     }
 
@@ -1269,7 +1270,7 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeaders(['X-Test-Header' => ['baz']]);
+                $request->hasHeaders(['X-Test-Header' => ['baz']]);
         });
     }
 
@@ -1283,7 +1284,7 @@ class HttpClientTest extends TestCase
 
         $this->factory->assertSent(function (Request $request) {
             return $request->url() === 'http://foo.com/json' &&
-                   $request->hasHeaders(['X-Test-Header' => ['baz']]);
+                $request->hasHeaders(['X-Test-Header' => ['baz']]);
         });
     }
 
@@ -1350,7 +1351,7 @@ class HttpClientTest extends TestCase
 
         $response = new Psr7Response(403, [], json_encode($error));
 
-        throw tap(new RequestException(new Response($response)), fn ($exception) => $exception->report());
+        throw tap(new RequestException(new Response($response)), fn($exception) => $exception->report());
     }
 
     public function testRequestExceptionTruncatedSummary()
@@ -1366,7 +1367,7 @@ class HttpClientTest extends TestCase
         ];
         $response = new Psr7Response(403, [], json_encode($error));
 
-        throw tap(new RequestException(new Response($response)), fn ($exception) => $exception->report());
+        throw tap(new RequestException(new Response($response)), fn($exception) => $exception->report());
     }
 
     public function testRequestExceptionWithoutTruncatedSummary()
@@ -1384,7 +1385,7 @@ class HttpClientTest extends TestCase
         ];
         $response = new Psr7Response(403, [], json_encode($error));
 
-        throw tap(new RequestException(new Response($response)), fn ($exception) => $exception->report());
+        throw tap(new RequestException(new Response($response)), fn($exception) => $exception->report());
     }
 
     public function testRequestExceptionWithCustomTruncatedSummary()
@@ -1402,7 +1403,7 @@ class HttpClientTest extends TestCase
         ];
         $response = new Psr7Response(403, [], json_encode($error));
 
-        throw tap(new RequestException(new Response($response)), fn ($exception) => $exception->report());
+        throw tap(new RequestException(new Response($response)), fn($exception) => $exception->report());
     }
 
     public function testRequestLevelTruncationLevelOnRequestException()
@@ -1639,7 +1640,7 @@ class HttpClientTest extends TestCase
     {
         $this->factory->fakeSequence()->push('abc123');
 
-        $destination = __DIR__.'/fixtures/sunk.txt';
+        $destination = __DIR__ . '/fixtures/sunk.txt';
 
         if (file_exists($destination)) {
             unlink($destination);
@@ -1762,17 +1763,17 @@ class HttpClientTest extends TestCase
         $executionOrder = [
             function (Request $request) {
                 return $request->url() === 'http://foo.com/json' &&
-                       $request->hasHeader('Content-Type', 'application/json') &&
-                       $request->hasHeader('X-Test-Header', 'foo') &&
-                       $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                       $request['name'] === 'Taylor';
+                    $request->hasHeader('Content-Type', 'application/json') &&
+                    $request->hasHeader('X-Test-Header', 'foo') &&
+                    $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                    $request['name'] === 'Taylor';
             },
             function (Request $request) {
                 return $request->url() === 'http://bar.com/json' &&
-                       $request->hasHeader('Content-Type', 'application/json') &&
-                       $request->hasHeader('X-Test-Header', 'bar') &&
-                       $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                       $request['name'] === 'Taylor';
+                    $request->hasHeader('Content-Type', 'application/json') &&
+                    $request->hasHeader('X-Test-Header', 'bar') &&
+                    $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                    $request['name'] === 'Taylor';
             },
         ];
 
@@ -1800,17 +1801,17 @@ class HttpClientTest extends TestCase
         $executionOrder = [
             function (Request $request) {
                 return $request->url() === 'http://bar.com/json' &&
-                       $request->hasHeader('Content-Type', 'application/json') &&
-                       $request->hasHeader('X-Test-Header', 'bar') &&
-                       $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                       $request['name'] === 'Taylor';
+                    $request->hasHeader('Content-Type', 'application/json') &&
+                    $request->hasHeader('X-Test-Header', 'bar') &&
+                    $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                    $request['name'] === 'Taylor';
             },
             function (Request $request) {
                 return $request->url() === 'http://foo.com/json' &&
-                       $request->hasHeader('Content-Type', 'application/json') &&
-                       $request->hasHeader('X-Test-Header', 'foo') &&
-                       $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
-                       $request['name'] === 'Taylor';
+                    $request->hasHeader('Content-Type', 'application/json') &&
+                    $request->hasHeader('X-Test-Header', 'foo') &&
+                    $request->hasHeader('X-Test-ArrayHeader', ['bar', 'baz']) &&
+                    $request['name'] === 'Taylor';
             },
         ];
 
@@ -2009,7 +2010,7 @@ class HttpClientTest extends TestCase
 
         $middleware = Middleware::history($history);
 
-        $responses = $this->factory->pool(fn (Pool $pool) => [
+        $responses = $this->factory->pool(fn(Pool $pool) => [
             $pool->withMiddleware($middleware)->post('https://example.com', ['hyped-for' => 'laravel-movie']),
         ]);
 
@@ -2351,6 +2352,31 @@ class HttpClientTest extends TestCase
         });
     }
 
+    public function testRetryWith3xxResponseProvidesExceptionToCallback()
+    {
+        $this->factory->fake([
+            '*' => $this->factory->response(['redirect'], 302, ['Location' => '/redirect']),
+        ]);
+
+        $exceptionReceived = null;
+
+        $response = $this->factory
+            ->withoutRedirecting()
+            ->retry(2, 0, function (\Throwable $exception) use (&$exceptionReceived) {
+                $exceptionReceived = $exception;
+
+                return false; // don't actually retry
+            }, false)
+            ->get('http://foo.com/get');
+
+        $this->assertFalse($response->successful());
+        $this->assertTrue($response->redirect());
+
+        $this->assertNotNull($exceptionReceived);
+        $this->assertInstanceOf(RequestException::class, $exceptionReceived);
+        $this->assertSame(302, $exceptionReceived->response->status());
+    }
+
     public function testRequestCanBeModifiedInRetryCallbackWithBackoffArray()
     {
         $this->factory->fake([
@@ -2462,7 +2488,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, null, true)->get('http://foo.com/get'),
         ]);
 
@@ -2480,7 +2506,7 @@ class HttpClientTest extends TestCase
 
         $whenAttempts = collect();
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, function ($exception) use ($whenAttempts) {
                 $whenAttempts->push($exception);
 
@@ -2502,7 +2528,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, null, false)->get('http://foo.com/get'),
         ]);
 
@@ -2521,7 +2547,7 @@ class HttpClientTest extends TestCase
 
         $whenAttempts = collect();
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, function ($exception) use ($whenAttempts) {
                 $whenAttempts->push($exception);
 
@@ -2546,7 +2572,7 @@ class HttpClientTest extends TestCase
                 ->push(['ok'], 200),
         ]);
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, function ($exception, $request) {
                 $this->assertInstanceOf(PendingRequest::class, $request);
 
@@ -2586,7 +2612,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 500),
         ]);
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->retry(2, 1000, function ($exception) {
                 throw new Exception('Foo bar');
             }, false)->get('http://foo.com/get'),
@@ -2677,7 +2703,7 @@ class HttpClientTest extends TestCase
 
     public function testFakeConnectionExceptionWithinFakeClosure()
     {
-        $this->factory->fake(fn () => $this->factory->failedConnection('Fake'));
+        $this->factory->fake(fn() => $this->factory->failedConnection('Fake'));
 
         $exception = null;
 
@@ -2768,7 +2794,7 @@ class HttpClientTest extends TestCase
         });
 
         $pendingRequest = $this->factory->withMiddleware(
-            Middleware::mapRequest(fn (RequestInterface $request) => $request->withHeader('X-Test-Header', 'Test'))
+            Middleware::mapRequest(fn(RequestInterface $request) => $request->withHeader('X-Test-Header', 'Test'))
         );
 
         $pendingRequest->post('https://laravel.example', ['laravel' => 'framework']);
@@ -3106,7 +3132,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['success'], 200),
         ]);
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->throw()->get('http://foo.com/get'),
         ]);
 
@@ -3120,7 +3146,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->throw()->get('http://foo.com/get'),
         ]);
 
@@ -3134,7 +3160,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->throwIf(true)->get('http://foo.com/get'),
         ]);
 
@@ -3148,7 +3174,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->throwIf(false)->get('http://foo.com/get'),
         ]);
 
@@ -3164,7 +3190,7 @@ class HttpClientTest extends TestCase
 
         $hitThrowCallback = collect();
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->throwIf(function ($response) {
                 $this->assertInstanceOf(Response::class, $response);
                 $this->assertSame(403, $response->status());
@@ -3193,7 +3219,7 @@ class HttpClientTest extends TestCase
 
         $hitThrowCallback = collect();
 
-        [$response] = $this->factory->pool(fn ($pool) => [
+        [$response] = $this->factory->pool(fn($pool) => [
             $pool->throwIf(function ($response) {
                 $this->assertInstanceOf(Response::class, $response);
                 $this->assertSame(403, $response->status());
@@ -3216,7 +3242,7 @@ class HttpClientTest extends TestCase
 
         $flag = collect();
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->throw(function ($exception) use (&$flag) {
                 $flag->push(true);
             })->get('http://foo.com/get'),
@@ -3234,7 +3260,7 @@ class HttpClientTest extends TestCase
             '*' => $this->factory->response(['error'], 403),
         ]);
 
-        [$exception] = $this->factory->pool(fn ($pool) => [
+        [$exception] = $this->factory->pool(fn($pool) => [
             $pool->retry(3)->throw()->get('http://foo.com/get'),
         ]);
 
@@ -3379,7 +3405,7 @@ class HttpClientTest extends TestCase
         $exception = null;
 
         try {
-            $this->factory->get('http://foo.com/api')->throwIfStatus(fn ($status) => $status === 400);
+            $this->factory->get('http://foo.com/api')->throwIfStatus(fn($status) => $status === 400);
         } catch (RequestException $e) {
             $exception = $e;
         }
@@ -3435,7 +3461,7 @@ class HttpClientTest extends TestCase
         $exception = null;
 
         try {
-            $this->factory->get('http://foo.com/api/400')->throwUnlessStatus(fn ($status) => $status === 500);
+            $this->factory->get('http://foo.com/api/400')->throwUnlessStatus(fn($status) => $status === 500);
         } catch (RequestException $e) {
             $exception = $e;
         }
@@ -3467,7 +3493,7 @@ class HttpClientTest extends TestCase
         $exception = null;
 
         try {
-            $this->factory->get('http://foo.com/api/500')->throwUnlessStatus(fn ($status) => $status === 500);
+            $this->factory->get('http://foo.com/api/500')->throwUnlessStatus(fn($status) => $status === 500);
         } catch (RequestException $e) {
             $exception = $e;
         }
@@ -3547,7 +3573,7 @@ class HttpClientTest extends TestCase
         $exception = null;
 
         try {
-            $this->factory->get('http://foo.com/api')->throwIfStatus(fn ($status) => $status === 201);
+            $this->factory->get('http://foo.com/api')->throwIfStatus(fn($status) => $status === 201);
         } catch (RequestException $e) {
             $exception = $e;
         }
@@ -3586,7 +3612,7 @@ class HttpClientTest extends TestCase
         $exception = null;
 
         try {
-            $this->factory->get('http://foo.com/api')->throwUnlessStatus(fn ($status) => $status === 200);
+            $this->factory->get('http://foo.com/api')->throwUnlessStatus(fn($status) => $status === 200);
         } catch (RequestException $e) {
             $exception = $e;
         }
@@ -3726,7 +3752,7 @@ class HttpClientTest extends TestCase
                 $request->toPsrRequest()->getProtocolVersion()
             );
 
-            return $request->toPsrRequest()->withHeader('Authorization', 'Bearer '.$requestLine);
+            return $request->toPsrRequest()->withHeader('Authorization', 'Bearer ' . $requestLine);
         })->get('http://foo.com/json');
 
         $this->factory->assertSent(function (Request $request) {
@@ -3905,7 +3931,7 @@ class HttpClientTest extends TestCase
 
     public function testItCanGetTheGlobalMiddleware()
     {
-        $this->factory->globalMiddleware($middleware = fn () => null);
+        $this->factory->globalMiddleware($middleware = fn() => null);
 
         $this->assertEquals([$middleware], $this->factory->getGlobalMiddleware());
     }
@@ -4002,7 +4028,7 @@ class HttpClientTest extends TestCase
         $this->assertFalse($allowRedirects);
         $this->assertSame(['true'], $headers['X-Foo']);
 
-        $factory->globalOptions(fn () => [
+        $factory->globalOptions(fn() => [
             'timeout' => 10,
             'headers' => [
                 'X-Foo' => 'false',
@@ -4353,12 +4379,12 @@ class HttpClientTest extends TestCase
         ]);
 
         $response = $this->factory
-            ->afterResponse(fn (Response $response): TestResponse => new TestResponse($response->toPsrResponse()))
-            ->afterResponse(fn () => 'abc')
+            ->afterResponse(fn(Response $response): TestResponse => new TestResponse($response->toPsrResponse()))
+            ->afterResponse(fn() => 'abc')
             ->afterResponse(function ($r) {
                 $this->assertInstanceOf(TestResponse::class, $r);
             })
-            ->afterResponse(fn (Response $r) => new Response($r->toPsrResponse()->withBody(Utils::streamFor(strtolower($r->body())))))
+            ->afterResponse(fn(Response $r) => new Response($r->toPsrResponse()->withBody(Utils::streamFor(strtolower($r->body())))))
             ->get('http://200.com');
 
         $this->assertInstanceOf(Response::class, $response);
@@ -4373,7 +4399,7 @@ class HttpClientTest extends TestCase
 
         try {
             $this->factory->throw()
-                ->afterResponse(fn ($response) => new TestResponse($response->toPsrResponse()))
+                ->afterResponse(fn($response) => new TestResponse($response->toPsrResponse()))
                 ->post('http://500.com');
         } catch (RequestException $e) {
             $this->assertInstanceOf(TestResponse::class, $e->response);
@@ -4388,9 +4414,9 @@ class HttpClientTest extends TestCase
         ]);
 
         $o = $this->factory->pool(function (Pool $pool): void {
-            $pool->as('200')->afterResponse(fn (Response $response) => new TestResponse($response->toPsrResponse()))->get('http://200.com');
-            $pool->as('401-throwing')->throw()->afterResponse(fn (Response $response) => new TestResponse($response->toPsrResponse()))->get('http://401.com');
-            $pool->as('401-response')->afterResponse(fn (Response $response) => new TestResponse($response->toPsrResponse()->withBody(Utils::streamFor('different'))))->get('http://401.com');
+            $pool->as('200')->afterResponse(fn(Response $response) => new TestResponse($response->toPsrResponse()))->get('http://200.com');
+            $pool->as('401-throwing')->throw()->afterResponse(fn(Response $response) => new TestResponse($response->toPsrResponse()))->get('http://401.com');
+            $pool->as('401-response')->afterResponse(fn(Response $response) => new TestResponse($response->toPsrResponse()->withBody(Utils::streamFor('different'))))->get('http://401.com');
         }, 0);
 
         $this->assertInstanceOf(TestResponse::class, $o['200']);
@@ -4406,7 +4432,7 @@ class HttpClientTest extends TestCase
 
         // Create a response with a big integer that exceeds PHP_INT_MAX
         $bigInt = '9223372036854775808';
-        $body = '{"value":'.$bigInt.'}';
+        $body = '{"value":' . $bigInt . '}';
 
         $response = new Response(Factory::psr7Response($body));
 
@@ -4469,9 +4495,7 @@ class CustomFactory extends Factory
     }
 }
 
-class TestResponse extends Response
-{
-}
+class TestResponse extends Response {}
 
 class BodyTrackingResponse extends Response
 {
